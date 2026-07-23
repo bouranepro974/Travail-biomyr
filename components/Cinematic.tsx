@@ -99,12 +99,13 @@ export default function Cinematic() {
     const cw = canvas.width;
     const ch = canvas.height;
     const ir = img.naturalWidth / img.naturalHeight;
-    const cr = cw / ch;
-    let dw: number, dh: number;
-    if (cr > ir) { dw = cw; dh = cw / ir; }
-    else { dh = ch; dw = ch * ir; }
+    // On cale TOUJOURS sur la hauteur : la pleine hauteur de l'image (donc le
+    // sommet et les racines de l'arbre) est toujours visible. Desktop large =
+    // fines marges latérales (dégradé de fond) ; mobile = plein écran, côtés rognés.
+    const dh = ch;
+    const dw = ch * ir;
     const dx = (cw - dw) / 2;
-    const dy = (ch - dh) / 2;
+    const dy = 0;
     ctx.clearRect(0, 0, cw, ch);
     ctx.drawImage(img, dx, dy, dw, dh);
   };
@@ -182,7 +183,8 @@ export default function Cinematic() {
           pointerEvents: ready ? "none" : "auto",
         }}
       >
-        <div className="loader__brand">BIOMYR</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="loader__logo" src="/logos/biomyr.svg" alt="BIOMYR" />
         <div className="loader__bar">
           <div
             className="loader__fill"
@@ -213,7 +215,8 @@ export default function Cinematic() {
           {/* Hero */}
           <Panel progress={progress} times={[-0.01, 0, 0.08, 0.13]} align="center">
             <div className="kicker">Biotechnologie agricole</div>
-            <h1 className="h-hero">{HERO.title}</h1>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="hero-logo" src="/logos/biomyr.svg" alt="BIOMYR" />
             <div className="tagline">{HERO.tagline}</div>
             <p className="body-text">{HERO.subtitle}</p>
             <div className="btn-row">
@@ -240,7 +243,10 @@ export default function Cinematic() {
           <Panel progress={progress} times={[0.15, 0.2, 0.28, 0.33]} align="left">
             <div className="index-num">{AXES[0].index}</div>
             <div className="kicker">{AXES[0].kicker}</div>
-            <h2 className="h-title">{AXES[0].title}</h2>
+            <div className="veyer-card">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="veyer-logo" src="/logos/veyer.svg" alt="VÉYÈR" />
+            </div>
             <div className="brandline">{AXES[0].brand}</div>
             <p className="body-text">{AXES[0].text}</p>
           </Panel>
@@ -274,14 +280,14 @@ export default function Cinematic() {
 
           {/* Qui sommes-nous — racines */}
           <Panel progress={progress} times={[0.84, 0.88, 0.92, 0.955]} align="center">
-            <div className="kicker kicker--gold">{ABOUT.kicker}</div>
+            <div className="kicker kicker--alt">{ABOUT.kicker}</div>
             <h2 className="h-title">{ABOUT.title}</h2>
             <p className="body-text">{ABOUT.text}</p>
           </Panel>
 
           {/* CTA final — révélation */}
           <Panel progress={progress} times={[0.95, 0.98, 1.2, 1.3]} align="center">
-            <div className="kicker kicker--gold">{FINAL.kicker}</div>
+            <div className="kicker kicker--alt">{FINAL.kicker}</div>
             <h2 className="h-title">{FINAL.title}</h2>
             <p className="body-text">{FINAL.text}</p>
             <div className="btn-row">

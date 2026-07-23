@@ -6,7 +6,8 @@ export default function Home() {
     <main>
       {/* Navigation */}
       <nav className="nav">
-        <div className="nav__brand">BIOMYR</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="nav__logo" src="/logos/biomyr.svg" alt="BIOMYR" />
         <div className="nav__links">
           {NAV.map((item) => (
             <span key={item}>{item}</span>
@@ -21,7 +22,8 @@ export default function Home() {
       <footer id="contact" className="footer">
         <div className="footer__grid">
           <div>
-            <div className="footer__brand">BIOMYR</div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="footer__logo" src="/logos/biomyr.svg" alt="BIOMYR" />
             <p className="body-text" style={{ maxWidth: 460 }}>
               {HERO.subtitle}
             </p>
