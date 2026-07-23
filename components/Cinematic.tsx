@@ -98,20 +98,26 @@ export default function Cinematic() {
     }
     const cw = canvas.width;
     const ch = canvas.height;
-    const ir = img.naturalWidth / img.naturalHeight;
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+    const ir = iw / ih;
     const cr = cw / ch;
-    // "cover" : plein écran, immersif, aucune bordure.
-    // L'ancrage vertical est biaisé vers le HAUT (0.35) : si l'image déborde
-    // en hauteur (écrans plus larges que 16:9), on rogne surtout le bas plutôt
-    // que le sommet de l'arbre.
-    const ANCHOR_Y = 0.35;
-    let dw: number, dh: number;
-    if (cr > ir) { dw = cw; dh = cw / ir; }
-    else { dh = ch; dw = ch * ir; }
-    const dx = (cw - dw) / 2;
-    const dy = (ch - dh) * ANCHOR_Y;
     ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, dx, dy, dw, dh);
+
+    // 1) Fond plein écran flouté (cover) -> aucune bordure visible, immersif.
+    let bw: number, bh: number;
+    if (cr > ir) { bw = cw; bh = cw / ir; }
+    else { bh = ch; bw = ch * ir; }
+    const canFilter = "filter" in ctx;
+    if (canFilter) ctx.filter = "blur(26px) brightness(0.5)";
+    ctx.drawImage(img, (cw - bw) / 2, (ch - bh) / 2, bw, bh);
+    if (canFilter) ctx.filter = "none";
+
+    // 2) Arbre entier, net, centré (contain) -> toute l'image toujours visible.
+    const scale = Math.min(cw / iw, ch / ih);
+    const dw = iw * scale;
+    const dh = ih * scale;
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   };
 
   /* ---- Boucle de lissage (glide) — optionnelle, active si rAF dispo ---- */
