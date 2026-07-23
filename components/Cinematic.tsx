@@ -99,13 +99,17 @@ export default function Cinematic() {
     const cw = canvas.width;
     const ch = canvas.height;
     const ir = img.naturalWidth / img.naturalHeight;
-    // On cale TOUJOURS sur la hauteur : la pleine hauteur de l'image (donc le
-    // sommet et les racines de l'arbre) est toujours visible. Desktop large =
-    // fines marges latérales (dégradé de fond) ; mobile = plein écran, côtés rognés.
-    const dh = ch;
-    const dw = ch * ir;
+    const cr = cw / ch;
+    // "cover" : plein écran, immersif, aucune bordure.
+    // L'ancrage vertical est biaisé vers le HAUT (0.35) : si l'image déborde
+    // en hauteur (écrans plus larges que 16:9), on rogne surtout le bas plutôt
+    // que le sommet de l'arbre.
+    const ANCHOR_Y = 0.35;
+    let dw: number, dh: number;
+    if (cr > ir) { dw = cw; dh = cw / ir; }
+    else { dh = ch; dw = ch * ir; }
     const dx = (cw - dw) / 2;
-    const dy = 0;
+    const dy = (ch - dh) * ANCHOR_Y;
     ctx.clearRect(0, 0, cw, ch);
     ctx.drawImage(img, dx, dy, dw, dh);
   };
